@@ -15,6 +15,7 @@ package screens
 		private var title:TextField;
 		private var start:TextField;
 		
+		
 		public static const START_GAME:String = "start game";		
 				
 		

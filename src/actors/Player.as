@@ -1,7 +1,9 @@
-package actors 
+﻿package actors 
 {
 	import utils.Controller;	
 	import flash.events.Event;
+	import flash.ui.Keyboard;
+	
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -18,7 +20,7 @@ package actors
 		private function init(e:Event):void 
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, init);
-			controller = new Controller(stage);
+			controller = new Controller(stage, Keyboard.W, Keyboard.S, Keyboard.SPACE);
 			this.addEventListener(Event.ENTER_FRAME, loop);			
 		}
 		private function loop(e:Event):void 
