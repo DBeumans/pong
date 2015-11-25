@@ -17,6 +17,8 @@
 		private var controller:Controller;
 		private var speed:Number = 0;
 		
+		public var singleplayerOption:Boolean = false;
+		
 		public function set balls(b:Array):void
 		{
 			_balls = b;			
@@ -47,33 +49,40 @@
 		}
 		private function loop(e:Event):void 
 		{
-			/*getTarget();
-									
-			if(_target != null){
-				if (_target.y < this.y - 20)_speed = -_maxSpeed;
-				else if (_target.y > this.y + 20)_speed = _maxSpeed;
-				else _speed = 0;
-				this.y += _speed;
-			}*/
-		if (controller.up)
+			if (singleplayerOption == true)
 			{
-				speed = -15;
+				getTarget();
+										
+				if(_target != null){
+					if (_target.y < this.y - 20)_speed = -_maxSpeed;
+					else if (_target.y > this.y + 20)_speed = _maxSpeed;
+					else _speed = 0;
+					this.y += _speed;
+				}
 			}
-			else if(controller.down)
+			else
 			{
-				speed = 15;
-			}else
-			{
-				if (speed > 0) speed--;
-				if (speed < 0) speed++;
-				
+				if (controller.up)
+				{
+					speed = -15;
+				}
+				else if(controller.down)
+				{
+					speed = 15;
+				}else
+				{
+					if (speed > 0) speed--;
+					if (speed < 0) speed++;
+					
+				}
+				if (controller.fire)
+				{
+					
+					
+				}
+				this.y += speed;
 			}
-			if (controller.fire)
-			{
-				
-				
-			}
-			this.y += speed;
+		
 		}
 	}
 }

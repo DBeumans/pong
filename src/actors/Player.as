@@ -12,6 +12,7 @@
 	{
 		private var controller:Controller;
 		private var speed:Number = 0;
+		private var direction:int = 0
 		
 		public function Player() 
 		{
@@ -25,6 +26,7 @@
 		}
 		private function loop(e:Event):void 
 		{
+				
 			if (controller.up)
 			{
 				speed = -15;
@@ -32,7 +34,8 @@
 			else if(controller.down)
 			{
 				speed = 15;
-			}else
+			}
+			else
 			{
 				if (speed > 0) speed--;
 				if (speed < 0) speed++;

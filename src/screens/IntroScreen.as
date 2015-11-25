@@ -1,11 +1,17 @@
 package screens 
 {
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.display.Graphics;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.sampler.NewObjectSample;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFieldAutoSize;
 	import utils.Controller;
 	import flash.events.KeyboardEvent;
+	import screens.Buttons;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -15,11 +21,9 @@ package screens
 		private var title:TextField;
 		private var start:TextField;
 		
+		private var buttons:Buttons;
 		
 		public static const START_GAME:String = "start game";		
-				
-		
-		
 		
 		public function IntroScreen() 
 		{
@@ -30,7 +34,9 @@ package screens
 		private function init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			buttons = new Buttons();
 			
+			addChild(buttons);
 			
 						
 			title = new TextField();
@@ -50,7 +56,7 @@ package screens
 			
 			start = new TextField();
 			start.embedFonts = true;
-			start.text = "press space to start";
+			start.text = "Press space to start";
 			start.autoSize = TextFieldAutoSize.CENTER;
 			start.setTextFormat(subFormat)
 			
@@ -63,9 +69,11 @@ package screens
 			
 			
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
+			
+			
 		}
-		
-		private function onKeyUp(e:KeyboardEvent):void 
+		private function onKeyUp(e:KeyboardEvent):void
 		{
 			if (e.keyCode == 32) {
 				start.removeEventListener(Event.ENTER_FRAME, loop);		
