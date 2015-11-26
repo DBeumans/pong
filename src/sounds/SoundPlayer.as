@@ -25,6 +25,7 @@ package sounds
 			loadSound("../lib/pong3.mp3");	
 			loadSound("../lib/lose.mp3");	
 			loadSound("../lib/intro.mp3");	
+			loadSound("../lib/menuSong.mp3");
 						
 			_main.addEventListener(GameScreen.BALL_BOUNCE, onBounce, true);
 			_main.addEventListener(GameScreen.GAME_OVER, onGameOver, true);

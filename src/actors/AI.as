@@ -17,7 +17,7 @@
 		private var controller:Controller;
 		private var speed:Number = 0;
 		
-		public var singleplayerOption:Boolean = false;
+		public var singleplayerOption:Boolean = true;
 		
 		public function set balls(b:Array):void
 		{
@@ -30,6 +30,7 @@
 		
 		private function init(e:Event):void 
 		{
+			singleplayerOption = true;
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			controller = new Controller(stage);
 			this.addEventListener(Event.ENTER_FRAME, loop);						
@@ -57,10 +58,11 @@
 					if (_target.y < this.y - 20)_speed = -_maxSpeed;
 					else if (_target.y > this.y + 20)_speed = _maxSpeed;
 					else _speed = 0;
+					
 					this.y += _speed;
 				}
 			}
-			else
+			if (!singleplayerOption == true)
 			{
 				if (controller.up)
 				{

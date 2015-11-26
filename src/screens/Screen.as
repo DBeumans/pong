@@ -16,7 +16,7 @@ package screens
 		advancedAntiAliasing="true", 
 		embedAsCFF = "false")]		
 		private var JediFont:Class;
-		
+		 
 		protected var textFormat:TextFormat;
 		protected var subFormat:TextFormat;
 		protected var scoreFormat:TextFormat;
