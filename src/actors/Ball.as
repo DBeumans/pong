@@ -29,6 +29,15 @@ package actors
 			_movement.x = move;
 			
 		}
+		public function get yMove():Number
+		{
+			return _movement.y;			
+		}
+		public function set yMove(move:Number):void
+		{
+			_movement.y = move;
+			
+		}
 		public function Ball() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
@@ -55,7 +64,7 @@ package actors
 		
 		private function restart(e:TimerEvent):void 
 		{
-			_movement = MovementCalculator.calculateMovement(15 + Math.random() * -5, Math.random() * 360);
+			_movement = MovementCalculator.calculateMovement(10, Math.random() * 360);
 			if (_movement.x > 0 && _movement.x < 2) _movement.x += 2;
 			if (_movement.x < 0 && _movement.x > -2) _movement.x -= 2;
 		}
@@ -64,7 +73,7 @@ package actors
 			this.x += _movement.x;
 			this.y += _movement.y;
 			
-			if (this.y <= 0 || this.y >= stage.stageHeight)
+			if (this.y < 0 || this.y > stage.stageHeight)
 			{
 				_movement.y *= -1;
 				

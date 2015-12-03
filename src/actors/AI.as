@@ -1,7 +1,6 @@
-﻿package actors 
+package actors 
 {
 	import flash.events.Event;
-	import utils.Controller;
 	
 	/**
 	 * ...
@@ -11,14 +10,8 @@
 	{
 		private var _target:Ball;
 		private var _speed:Number = 0;
-		private var _maxSpeed:Number = 12;
+		private var _maxSpeed:Number = 15;
 		private var _balls:Array;
-		
-		private var controller:Controller;
-		private var speed:Number = 0;
-		
-		public var singleplayerOption:Boolean = true;
-		
 		public function set balls(b:Array):void
 		{
 			_balls = b;			
@@ -30,9 +23,7 @@
 		
 		private function init(e:Event):void 
 		{
-			singleplayerOption = true;
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			controller = new Controller(stage);
 			this.addEventListener(Event.ENTER_FRAME, loop);						
 		}
 		private function getTarget():void
@@ -42,49 +33,27 @@
 				var closest:Ball = _balls[0];
 				for (var i:int = 1; i < _balls.length; i++) 
 				{
-					var d:Number = _balls[i-1].x - _balls[i].x;
-					if (d < 0) closest = _balls[i];
+					var d:Number = Math.abs(this.x - _balls[i].x);
+					var lastD:Number = Math.abs(this.x - closest.x);
+					if (d < lastD) closest = _balls[i];
 				}
 				_target = closest;
 			}
 		}
 		private function loop(e:Event):void 
 		{
-			if (singleplayerOption == true)
-			{
-				getTarget();
-										
-				if(_target != null){
-					if (_target.y < this.y - 20)_speed = -_maxSpeed;
-					else if (_target.y > this.y + 20)_speed = _maxSpeed;
-					else _speed = 0;
-					
-					this.y += _speed;
-				}
+			getTarget();
+									
+			if(_target != null){
+				if (_target.y < this.y - 20)_speed = -_maxSpeed;
+				else if (_target.y > this.y + 20)_speed = _maxSpeed;
+				else _speed = 0;
+				this.y += _speed;
 			}
-			if (!singleplayerOption == true)
-			{
-				if (controller.up)
-				{
-					speed = -15;
-				}
-				else if(controller.down)
-				{
-					speed = 15;
-				}else
-				{
-					if (speed > 0) speed--;
-					if (speed < 0) speed++;
-					
-				}
-				if (controller.fire)
-				{
-					
-					
-				}
-				this.y += speed;
-			}
-		
+		}	
+		public function destroy():void
+		{
+			this.addEventListener(Event.ENTER_FRAME, loop);									
 		}
 	}
 }

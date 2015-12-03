@@ -1,17 +1,17 @@
 package screens 
 {
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.display.Graphics;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.sampler.NewObjectSample;
 	import flash.text.TextField;
+	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.text.TextFieldAutoSize;
 	import utils.Controller;
 	import flash.events.KeyboardEvent;
-	import actors.AI;
+	import screens.ShopScreen;
+	
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -21,29 +21,32 @@ package screens
 		private var title:TextField;
 		private var start:TextField;
 		
-		private var ai:AI;
+		private var _shopScreen:ShopScreen;	
+	
 		
-		public var btn_singlePlayer:MovieClip;
-		public var btn_TwoPlayer:MovieClip;
+		public var btn_shop:MovieClip;
 		
 		public static const START_GAME:String = "start game";		
+		public static const SHOP_MENU:String = "shop menu";
+		
+		
 		
 		public function IntroScreen() 
-		{
+		{			
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
+		
 			
 		}
 		
 		private function init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			ai = new AI();
 			
 			
 						
 			title = new TextField();
 			title.embedFonts = true;
-			title.text = "Pong";
+			title.text = "Anime Pong";
 			title.autoSize = TextFieldAutoSize.CENTER;			
 			title.setTextFormat(textFormat);		
 			
@@ -58,7 +61,7 @@ package screens
 			
 			start = new TextField();
 			start.embedFonts = true;
-			start.text = "Press space to start";
+			start.text = "press space to start";
 			start.autoSize = TextFieldAutoSize.CENTER;
 			start.setTextFormat(subFormat)
 			
@@ -66,66 +69,63 @@ package screens
 			start.y = stage.stageHeight / 2 + 20;
 			
 			addChild(start);
+
 			
-			//buttons
+			btn_shop = new MovieClip();
+			btn_shop.graphics.beginFill(0xFFCC00);
+			btn_shop.graphics.drawRect(0, 0, 120, 120);
+			btn_shop.graphics.endFill();
 			
-			// singleplayer option button.
-			btn_singlePlayer = new MovieClip();
-			btn_singlePlayer.graphics.beginFill(0x555443);
-			btn_singlePlayer.graphics.drawRect(0, 0, 100, 130);
-			btn_singlePlayer.graphics.endFill();
-			addChild(btn_singlePlayer);
+			btn_shop.x = 300;
+			btn_shop.y = 40;
 			
-			// 2 player option button
-			btn_TwoPlayer = new MovieClip();
-			btn_TwoPlayer.graphics.beginFill(0xFFCC00);
-			btn_TwoPlayer.graphics.drawRect(0, 0, 120, 120);
-			btn_TwoPlayer.graphics.endFill();
 			
-			btn_TwoPlayer.x = 300;
-			btn_TwoPlayer.y = 40;
 			
-			addChild(btn_TwoPlayer);
+			
+			
+			addChild(btn_shop);
 			
 			start.addEventListener(Event.ENTER_FRAME, loop);
 			
 			
-			//stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			btn_singlePlayer.addEventListener(MouseEvent.CLICK, btn_single_click);
-			btn_TwoPlayer.addEventListener(MouseEvent.CLICK, btn_twoPlayer_click);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			btn_shop.addEventListener(MouseEvent.CLICK, btn_shop_click);	
 			
-		
+			
+			
 		}
 		
-		private function onKeyUp(e:KeyboardEvent):void
+		private function btn_shop_click(e:MouseEvent):void
 		{
-			if (e.keyCode == 32) {
+			start.removeEventListener(Event.ENTER_FRAME, loop);			
+			//btn_singlePlayer.removeEventListener(MouseEvent.CLICK, btn_single_click);
+			btn_shop.removeEventListener(MouseEvent.CLICK, btn_shop_click);
+			stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			dispatchEvent(new Event(SHOP_MENU));
+		}
+		
+		private function onKeyUp(e:KeyboardEvent):void 
+		{
+			if (e.keyCode == 32) 
+			{
 				start.removeEventListener(Event.ENTER_FRAME, loop);		
 				stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 				dispatchEvent(new Event(START_GAME));
 				
 			}
+			
+			
+
 		}
-		private function btn_single_click(e:MouseEvent):void
-		{
-			ai.singleplayerOption = true;
-			//start.removeEventListener(Event.ENTER_FRAME, loop);
-			btn_singlePlayer.removeEventListener(MouseEvent.CLICK, btn_single_click);
-			btn_TwoPlayer.removeEventListener(MouseEvent.CLICK, btn_twoPlayer_click);
-			dispatchEvent(new Event(START_GAME));
-		}
-		private function btn_twoPlayer_click(e:MouseEvent):void
-		{
-			ai.singleplayerOption = false;
-			//start.removeEventListener(Event.ENTER_FRAME, loop);
-			btn_singlePlayer.removeEventListener(MouseEvent.CLICK, btn_single_click);
-			btn_TwoPlayer.removeEventListener(MouseEvent.CLICK, btn_twoPlayer_click);
-			dispatchEvent(new Event(START_GAME));
-		}
+		
+
 		
 		private var dir:Boolean = true;
 		private function loop(e:Event):void 
 		{
+			
+			
+			
 			if (dir)
 			{
 				start.alpha -= .1;	
@@ -140,12 +140,7 @@ package screens
 			
 		}
 		
+
 	}
 
 }
-
-/*
-
-
-
-*/
