@@ -12,6 +12,9 @@ package screens
 	import flash.events.KeyboardEvent;
 	import screens.ShopScreen;
 	
+	
+	import flash.system.fscommand;
+	
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -24,15 +27,22 @@ package screens
 		private var _shopScreen:ShopScreen;	
 	
 		
-		public var btn_shop:MovieClip;
+		
+		
+		
+		private var _quit:MovieClip = new quitArt;
+		private var _shop:MovieClip = new optionsArt2;
+		
 		
 		public static const START_GAME:String = "start game";		
+		public static const BUTTON_CLICK:String = "button click";		
 		public static const SHOP_MENU:String = "shop menu";
-		
-		
-		
+		public static const MENU_MUSIC:String = "menu music";
+		public static const BUTTON_HOVER:String = "button hover";
+
 		public function IntroScreen() 
 		{			
+			
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 		
 			
@@ -41,6 +51,8 @@ package screens
 		private function init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
+			dispatchEvent(new Event(MENU_MUSIC));
 			
 			
 						
@@ -70,39 +82,101 @@ package screens
 			
 			addChild(start);
 
+
 			
-			btn_shop = new MovieClip();
-			btn_shop.graphics.beginFill(0xFFCC00);
-			btn_shop.graphics.drawRect(0, 0, 120, 120);
-			btn_shop.graphics.endFill();
-			
-			btn_shop.x = 300;
-			btn_shop.y = 40;
+			_shop.x = 600;
+			_shop.y = 10;
+
+			this.addChild(_shop);
 			
 			
 			
 			
 			
-			addChild(btn_shop);
+			_quit.x = 750;
+			_quit.y = 10;
+			
+			this.addChild(_quit);
+			
+			
 			
 			start.addEventListener(Event.ENTER_FRAME, loop);
 			
 			
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			btn_shop.addEventListener(MouseEvent.CLICK, btn_shop_click);	
+				
+			_quit.addEventListener(MouseEvent.CLICK, btn_quit_click);
+			_quit.addEventListener(MouseEvent.MOUSE_OVER, btn_quit_over);
+			_quit.addEventListener(MouseEvent.MOUSE_OUT, btn_quit_out);
+			
+			_shop.addEventListener(MouseEvent.CLICK, btn_shop_click);
+			_shop.addEventListener(MouseEvent.MOUSE_OVER, btn_shp_over);
+			_shop.addEventListener(MouseEvent.MOUSE_OUT, btn_shp_out);
+
 			
 			
 			
+			
+		}		
+		private function btn_quit_over(e:MouseEvent):void
+		{
+			dispatchEvent(new Event(BUTTON_HOVER));
+			_quit.alpha = 0.8;
+			_quit.buttonMode = true;
+			trace("over");
+			
+	
+			
+			
+		}
+		private function btn_quit_out(e:MouseEvent):void
+		{
+			
+			_quit.alpha = 1;
+			_quit.buttonMode = false;
+			trace("out");
+
+		}
+		private function btn_shp_over(e:MouseEvent):void
+		{
+			dispatchEvent(new Event(BUTTON_HOVER));
+			_shop.alpha = 0.8;
+			_shop.buttonMode = true;
+			trace("over");
+	
+			
+			
+		}
+		private function btn_shp_out(e:MouseEvent):void
+		{
+			
+			_shop.alpha = 1;
+			_shop.buttonMode = false;
+			trace("out");
+
 		}
 		
-		private function btn_shop_click(e:MouseEvent):void
+		public function btn_shop_click(e:MouseEvent):void
 		{
 			start.removeEventListener(Event.ENTER_FRAME, loop);			
-			//btn_singlePlayer.removeEventListener(MouseEvent.CLICK, btn_single_click);
-			btn_shop.removeEventListener(MouseEvent.CLICK, btn_shop_click);
+			
+			_shop.removeEventListener(MouseEvent.CLICK, btn_shop_click);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			dispatchEvent(new Event(BUTTON_CLICK));
 			dispatchEvent(new Event(SHOP_MENU));
 		}
+		public function btn_quit_click(e:MouseEvent):void
+		{
+			dispatchEvent(new Event(BUTTON_CLICK));
+			start.removeEventListener(Event.ENTER_FRAME, loop);			
+			
+			_shop.removeEventListener(MouseEvent.CLICK, btn_shop_click);
+			_quit.removeEventListener(MouseEvent.CLICK, btn_quit_click);
+			stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
+			fscommand("quit");
+		}
+
 		
 		private function onKeyUp(e:KeyboardEvent):void 
 		{

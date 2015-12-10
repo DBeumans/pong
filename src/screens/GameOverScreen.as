@@ -7,6 +7,8 @@ package screens
 	import flash.events.KeyboardEvent;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
+	import screens.GameScreen;
+	import Main;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -16,6 +18,7 @@ package screens
 		private var title:TextField;
 		private var timer:Timer;
 		public static const RESET:String = "reset";
+		
 		public function GameOverScreen() 
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
@@ -24,11 +27,12 @@ package screens
 		
 		private function init(e:Event):void 
 		{
+			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 						
 			title = new TextField();
 			title.embedFonts = true;
-			title.text = "game over";
+			title.text = "You Lose!";
 			title.autoSize = TextFieldAutoSize.CENTER;			
 			title.setTextFormat(textFormat);		
 			

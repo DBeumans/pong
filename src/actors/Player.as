@@ -18,7 +18,16 @@ package actors
 		}
 		public function set paddle_yMove(move:Number):void
 		{
-			maxSpeed = move;
+			if ( move > 30)
+			{
+				maxSpeed = 30;
+				trace("Cant go heigher the speed limit, max speed have been  set to 30.");
+			}
+			else
+			{
+				maxSpeed = move;
+		
+			}
 		}
 		
 		public function Player() 
@@ -55,6 +64,7 @@ package actors
 			if (this.y > stage.stageHeight) this.y = stage.stageHeight;
 		
 			this.y += speed;
+			
 			
 			
 		}

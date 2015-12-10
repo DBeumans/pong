@@ -1,17 +1,20 @@
 package actors 
 {
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	
 	/**
 	 * ...
 	 * @author erwin henraat
 	 */
-	public class AI extends Paddle 
+	public class AI extends AiPaddle 
 	{
 		private var _target:Ball;
 		private var _speed:Number = 0;
-		private var _maxSpeed:Number = 15;
+		private var _maxSpeed:Number = 12;
 		private var _balls:Array;
+		
+		
 		public function set balls(b:Array):void
 		{
 			_balls = b;			
@@ -24,6 +27,7 @@ package actors
 		private function init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			//addChild(aiArt);
 			this.addEventListener(Event.ENTER_FRAME, loop);						
 		}
 		private function getTarget():void

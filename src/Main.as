@@ -1,17 +1,26 @@
 package
 {
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.net.FileReference;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.utils.ByteArray;
+	
 	import screens.GameOverScreen;
 	import screens.GameScreen;
+	import screens.WinScreen;
 	import screens.IntroScreen;
 	import sounds.SoundPlayer;
 	import screens.ShopScreen;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	
+	import flash.events.MouseEvent;
+	
+	
+	
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -23,19 +32,31 @@ package
 	 */
 	public class Main extends MovieClip 
 	{
-		private var gameScreen:GameScreen
+		private var gameScreen:GameScreen;
 		private var introScreen:IntroScreen;
 		private var gameOverScreen:GameOverScreen;
+		private var winScreen:WinScreen;
 		private var soundPlayer:SoundPlayer;
+		
+		public static const START_MUSIC:String = "start music";
 		
 		private var shopScreen:ShopScreen;
 		
-		public var myXml:XML;
-		public var myLoader:URLLoader = new URLLoader();
 		
-		public var playerMoney:uint = 20;
+		
+		
+		public var myXml:XML;
+		
+		
+		public var myLoader:URLLoader = new URLLoader();
+		public var backgroundloader:Loader = new Loader();
+		
+
+		public var playerMoney:int =0;
 		public var _money:TextField;
 		public var _moneyFormat:TextFormat = new TextFormat("../lib/starjedi/Starjedi.ttf", 20, 0xFF0000);
+		
+		private var startTimer:Timer;
 		
 		public function Main() 
 		{
@@ -46,64 +67,75 @@ package
 		private function init(e:Event = null):void 
 		{
 			
-			myLoader.load( new URLRequest("../src/xml/Image.xml"));
 			
-			myLoader.addEventListener(Event.COMPLETE, onComplete);
+			startTimer = new Timer ( 1500, 1 );
+			startTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
+			
+			startTimer.start();
+			
 			
 			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			// entry point			
 			soundPlayer = new SoundPlayer(this);
+			
+			
+			
 				
 		}
+
 		
-			public function onComplete(e:Event):void 
+		private function onTimerComplete(t:TimerEvent):void
 		{
-			var backgroundloader:Loader = new Loader();
+			startTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 			
-			myXml = new XML(e.target.data);
-			trace(myXml.image[0].link);
-			trace(myXml.player.money);
-			
-			backgroundloader.load( new URLRequest(myXml.image[0].link));
-			addChild(backgroundloader);
 		
-			//money
-			_money = new TextField();
-			_money.embedFonts = false;
-			//_money.text = String(playerMoney);
-			_money.autoSize = TextFieldAutoSize.CENTER;
-			//_money.setTextFormat(subFormat);
-			_money.defaultTextFormat = _moneyFormat;
 			
-			_money.x = 50;
-			_money.y = 50;
-			
-			//addChild(_money);
-			addEventListener(Event.ENTER_FRAME, updateText);
-			
-			buildIntroSreen();
+			myLoader.load( new URLRequest("../src/xml/Image.xml"));
+					
+			myLoader.addEventListener(Event.COMPLETE, onComplete);
 		}
 		
-		public function buildIntroSreen():void
+		
+		
+		public function onComplete(e:Event):void 
+		{
+			myXml = new XML(e.target.data);
+			trace(myXml.image[0].link);
+			
+			//backgroundloader.load( new URLRequest(myXml.image[0].link));
+			//addChild(backgroundloader);		
+			trace(myXml);
+
+			buildIntroScreen();
+			
+		}
+		
+
+		
+		public function buildIntroScreen():void
 		{			
+			
 			introScreen = new IntroScreen();
 			addChild(introScreen);
-			addChild(_money);
-			
+
 			introScreen.addEventListener(IntroScreen.START_GAME, startGame);
 			introScreen.addEventListener(IntroScreen.SHOP_MENU, shopMenu);
+			
+			//introScreen.addEventListener(IntroScreen.BUTTON_CLICK, onClick);
 			
 
 			
 		}
 		private function startGame(e:Event):void 
 		{
-			removeChild(_money);
+			
 			removeChild(introScreen);
 			gameScreen = new GameScreen();
 			addChild(gameScreen);
 			gameScreen.addEventListener(GameScreen.GAME_OVER, onGameOver);
+			gameScreen.addEventListener(GameScreen.WIN_SCREEN, onWinScreen);
 			
 			
 			
@@ -117,19 +149,28 @@ package
 			shopScreen.addEventListener(ShopScreen.BACK_BUTTON, btn_Back);
 			
 		}
-			
-		private function updateText(e:Event):void
-		{
-			_money.text = "Money: " + myXml.player.money;
-		}
+		
+
 
 		
 		private function btn_Back(e:Event):void
 		{
 			removeChild(shopScreen);
-			buildIntroSreen();
+			buildIntroScreen();
 		}
 	
+		private function onWinScreen(e:Event):void 
+		{
+			removeChild(gameScreen);
+			gameScreen.removeEventListener(GameScreen.WIN_SCREEN, onWinScreen);
+						
+			winScreen = new WinScreen();
+			addChild(winScreen);
+			winScreen.addEventListener(WinScreen.RESET2, on_Reset);
+			
+			
+			
+		}	
 		private function onGameOver(e:Event):void 
 		{
 			removeChild(gameScreen);
@@ -145,9 +186,20 @@ package
 		private function onReset(e:Event):void 
 		{
 			removeChild(gameOverScreen);
+			
 			gameOverScreen.removeEventListener(GameOverScreen.RESET, onReset);
 			
-			buildIntroSreen();
+			
+			buildIntroScreen();
+		}
+		private function on_Reset(e:Event):void 
+		{
+			
+			removeChild(winScreen);
+			
+			winScreen.removeEventListener(WinScreen.RESET2, onReset);
+			
+			buildIntroScreen();
 		}
 		
 	}
