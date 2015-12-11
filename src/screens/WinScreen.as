@@ -21,6 +21,7 @@ package screens
 
 		public static const RESET2:String = "reset";
 		
+		
 		public function WinScreen() 
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
@@ -47,7 +48,7 @@ package screens
 			
 			stage.addEventListener(KeyboardEvent.KEY_UP, reset);
 			
-			timer = new Timer(5000, 1);
+			timer = new Timer(6500, 1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onComplete);
 			timer.start();
 		}

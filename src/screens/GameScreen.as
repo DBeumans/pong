@@ -32,25 +32,31 @@ package screens
 		private var paddles:Array = [];
 		private var scoreboard:Scoreboard;
 		private var obstacles:Array = [];
+		
 		static public const GAME_OVER:String = "game over";
 		static public const WIN_SCREEN:String = "you win";
+		static public const WIN_MUSIC:String = "win music";
 		static public const BALL_BOUNCE:String = "ballBounce";
 		public static const BACK_TO_MENU:String = "back to menu";
+		public static const BACKGROUND_LOOP:String = "background loop";
 		
 		
 		
 		private var _main:Main;
 		private var _introScreen:IntroScreen;
+		//backgroundloader.load( new URLRequest(myXml.image[0].link));
 		
-		private var getBalls:int = 2;
+		
 		
 		public var gameTime:Timer = new Timer(100);
 		public var timerCounter:int = 0;
 		
-		
+		private var getBalls:int = 2;
 		
 		private var timer_txt:TextField;
-		private var timer_txtFormat:TextFormat = new TextFormat("../lib/starjedi/Starjedi.ttf", 20, 0xFF0000);
+		private var timer_txtFormat:TextFormat = new TextFormat("../lib/anime_inept/Anime Inept.otf", 20, 0xFFFFFF);
+		
+		private var timer:Timer;
 		
 		private var spawningObj:Boolean = false;
 		
@@ -62,22 +68,26 @@ package screens
 		private function init(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+		
+			
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
 			spawningObj += true;
-			spawningObjects();
+			//spawningObjects();
 			//timer
 			gameTime.start();
 			gameTime.addEventListener(TimerEvent.TIMER, timerHandler);
 			
-			
+			timer = new Timer ( 900, 1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
+			timer.start();
 			
 			timer_txt = new TextField();
 			timer_txt.autoSize = TextFieldAutoSize.CENTER;
 			timer_txt.defaultTextFormat = timer_txtFormat;
-			timer_txt.x = 50;
+			timer_txt.x = 60;
 			timer_txt.y = 20;
 			addChild(timer_txt);
 			
@@ -87,8 +97,14 @@ package screens
 			addChild(scoreboard);
 			
 			this.addEventListener(Event.ENTER_FRAME, loop);
+			
+				
+			
 		}
-		
+		private function onTimerComplete(e:TimerEvent):void
+		{
+			spawningObjects();
+		}
 		private function onKeyDown(e:KeyboardEvent):void
 		{
 			if (e.keyCode == 49)
@@ -148,8 +164,11 @@ package screens
 				for (var j:int = 0; j < 4; j++)
 				{
 					obstacles.push(new Obstacle());
+					
 					addChild(obstacles[j]);
 				}
+
+
 			}
 		}
 		
@@ -161,6 +180,8 @@ package screens
 				
 				trace("check");
 			}
+			dispatchEvent(new Event(BACKGROUND_LOOP));
+			
 		}
 		
 		private function checkCollision():void
@@ -187,9 +208,11 @@ package screens
 							
 						}
 						
+						
 					}
 					
 				}
+				
 				for (j = 0; j < paddles.length; j++)
 				{
 					if (paddles[j].hitTestObject(balls[i]))
@@ -208,7 +231,11 @@ package screens
 						}
 					}
 					
+								
+					
 				}
+				
+				
 			}
 		
 		}
@@ -241,6 +268,7 @@ package screens
 				
 				destroy();
 				
+				dispatchEvent(new Event(WIN_MUSIC));
 				dispatchEvent(new Event(WIN_SCREEN));
 				
 			}
@@ -269,12 +297,13 @@ package screens
 			{
 				obstacles[i].destroy();
 			}
+
 			balls.splice(0, balls.length);
 		}
 		
 		private function scoreAdd():void
 		{
-			_main._money += timerCounter + scoreboard.player1
+			//_main._money += timerCounter + scoreboard.player1
 		}
 		
 		private function timerHandler(e:TimerEvent):void
@@ -298,7 +327,7 @@ package screens
 			seconds = (seconds.length != 2) ? '0' + seconds : seconds;
 			
 			//display elapsed time on in a textfield on stage
-			timer_txt.text = minutes + ":" + seconds + "." + miliseconds
+			timer_txt.text ="Time: " + minutes + ":" + seconds + "." + miliseconds
 		
 		}
 	

@@ -18,9 +18,11 @@ package screens
 	import flash.net.FileReference;
 	import flash.net.URLRequest;
 	
+	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import screens.GameScreen;
 	import Main;
 	
 	/**
@@ -32,11 +34,18 @@ package screens
 		
 		public static const BACK_BUTTON:String = "back button";	
 		public static const BUTTON_CLICK:String = "button click";	
+		public static const BUTTON_HOVER:String = "button hover";	
 		public static const MENU_MUSIC:String = "menu music";
+		public static const BACKGROUND_1_CHANGE:String = "background 1";
+		public static const BACKGROUND_2_CHANGE:String = "background 2";
+		public static const BACKGROUND_3_CHANGE:String = "background 3";
+		
+		private var _gameScreen:GameScreen;
 		
 		private var optionsArt:MovieClip = new OptionsArt;
-		private var display1Art:MovieClip = new Display1Art;
-		private var display2Art:MovieClip = new Display2Art;
+		private var background1:MovieClip = new BackgroundBtnArt;
+		private var background2:MovieClip = new backgroundBtnArt2;
+		private var background3:MovieClip = new backgroundArt3;
 		
 		private var _paddle:Paddle;
 		private var _main:Main;
@@ -66,7 +75,7 @@ package screens
 			infoText.defaultTextFormat = infoTextFormat;
 			infoText.x = 450;
 			infoText.y = 20;
-			infoText.text = "How To Play :" + "\n" + "\n" + "Controls: " + "\n" +"Use the arrow keys ( arrow key up and arrow key down ) to go up and down." + "\n" + "Powerups: " + "\n" + "Press the 'Spacebar' to increase your speed for 3 seconds! ( 20 seconds cooldown),";
+			infoText.text = "How To Play :" + "\n" + "\n" + "Controls: " + "\n" +"Use the arrow keys ( arrow key up and arrow key down ) to go up and down." + "\n";
 			
 			addChild(infoText);
 			
@@ -77,26 +86,43 @@ package screens
 			
 			btn_back.x = 600;
 			btn_back.y = 40;*/
+			
+			background1.x = 100;
+			background1.y = 400;
+			addChild(background1);
+			
+			background2.x = 400;
+			background2.y = 400;
+			addChild(background2);
+			
+			background3.x = 700;
+			background3.y = 400;
+			addChild(background3);
+			
 			optionsArt.x = 50;
 			optionsArt.y = 575;
 			addChild(optionsArt);
-			
-			display1Art.x = 30;
-			display1Art.y = 250;
-			addChild(display1Art);
-			
-			display2Art.x = 180;
-			display2Art.y = 250;
-			addChild(display2Art);
-			
-			
+				
 			
 			optionsArt.addEventListener(MouseEvent.CLICK, btn_back_click);
-			display1Art.addEventListener(MouseEvent.CLICK, display1Art_click);
-			display2Art.addEventListener(MouseEvent.CLICK, display2Art_click);
+			optionsArt.addEventListener(MouseEvent.MOUSE_OVER, btn_back_over);
+			optionsArt.addEventListener(MouseEvent.MOUSE_OUT, btn_back_out);
+			
+			background1.addEventListener(MouseEvent.CLICK, background1_click);
+			background1.addEventListener(MouseEvent.MOUSE_OVER, background1_over);
+			background1.addEventListener(MouseEvent.MOUSE_OUT, background1_out);
+			
+			background2.addEventListener(MouseEvent.CLICK, background2_click);
+			background2.addEventListener(MouseEvent.MOUSE_OVER, background2_over);
+			background2.addEventListener(MouseEvent.MOUSE_OUT, background2_out);
+			
+			background3.addEventListener(MouseEvent.CLICK, background3_click);
+			background3.addEventListener(MouseEvent.MOUSE_OVER, background3_over);
+			background3.addEventListener(MouseEvent.MOUSE_OUT, background3_out);
 			
 			
 		}
+
 		
 		private function btn_back_click(e:MouseEvent):void
 		{
@@ -107,20 +133,121 @@ package screens
 			dispatchEvent(new Event(BACK_BUTTON));
 			
 		}
-		public function display1Art_click(ev:MouseEvent):void
+		private function btn_back_over(e:MouseEvent):void
 		{
-			trace("Art1");
-			
+			dispatchEvent(new Event(BUTTON_HOVER));
+			optionsArt.alpha = 0.8;
+			optionsArt.buttonMode = true;
+			trace("over");
+			optionsArt.scaleX = 1.13;
+			optionsArt.scaleY = 1.13;
 			
 		}
-		public function display2Art_click(ev:MouseEvent):void
+		private function btn_back_out(e:MouseEvent):void
 		{
-			trace("Art2");
 			
 			
+			
+			optionsArt.alpha = 1;
+			optionsArt.buttonMode = false;
+			trace("out");
+			optionsArt.scaleX = 1;
+			optionsArt.scaleY = 1;
+		}
+		
+		private function background1_click(e:MouseEvent):void
+		{
+			
+			
+			background1.removeEventListener(MouseEvent.CLICK, btn_back_click);
+			dispatchEvent(new Event(BACKGROUND_1_CHANGE));
+			dispatchEvent(new Event(BACK_BUTTON));
+			
+		}
+		private function background1_over(e:MouseEvent):void
+		{
+			dispatchEvent(new Event(BUTTON_HOVER));
+			background1.alpha = 0.8;
+			background1.buttonMode = true;
+			trace("over");
+			background1.scaleX = 1.13;
+			background1.scaleY = 1.13;
+			
+		}
+		private function background1_out(e:MouseEvent):void
+		{
+			
+			
+			
+			background1.alpha = 1;
+			background1.buttonMode = false;
+			trace("out");
+			background1.scaleX = 1;
+			background1.scaleY = 1;
+		}
+		
+		private function background2_click(e:MouseEvent):void
+		{
+			
+			
+			background2.removeEventListener(MouseEvent.CLICK, btn_back_click);
+			dispatchEvent(new Event(BACKGROUND_2_CHANGE));
+			dispatchEvent(new Event(BACK_BUTTON));
+			
+		}
+		private function background2_over(e:MouseEvent):void
+		{
+			dispatchEvent(new Event(BUTTON_HOVER));
+			background2.alpha = 0.8;
+			background2.buttonMode = true;
+			trace("over");
+			background2.scaleX = 1.13;
+			background2.scaleY = 1.13;
+			
+		}
+		private function background2_out(e:MouseEvent):void
+		{
+			
+			
+			
+			background2.alpha = 1;
+			background2.buttonMode = false;
+			trace("out");
+			background2.scaleX = 1;
+			background2.scaleY = 1;
 		}
 		
 		
+		private function background3_click(e:MouseEvent):void
+		{
+			
+			
+			background3.removeEventListener(MouseEvent.CLICK, btn_back_click);
+			dispatchEvent(new Event(BACKGROUND_3_CHANGE));
+			dispatchEvent(new Event(BACK_BUTTON));
+			
+		}
+		private function background3_over(e:MouseEvent):void
+		{
+			dispatchEvent(new Event(BUTTON_HOVER));
+			background3.alpha = 0.8;
+			background3.buttonMode = true;
+			trace("over");
+			background3.scaleX = 1.13;
+			background3.scaleY = 1.13;
+			
+		}
+		private function background3_out(e:MouseEvent):void
+		{
+			
+			
+			
+			background3.alpha = 1;
+			background3.buttonMode = false;
+			trace("out");
+			background3.scaleX = 1;
+			background3.scaleY = 1;
+		}
 
 	}
 	

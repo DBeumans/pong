@@ -12,20 +12,12 @@ package actors
 	 */
 	public class Paddle extends MovieClip 
 	{
-		private var _shopScreen:ShopScreen;
 
 		
-		private var _main:Main;
-		
-		private var opslag:int = 0;
-		
-		public var spawnPaddle:Array = [new PaddleArt(), //0
-										new Paddle2Art() // 1
-										];
 		
 		public function Paddle() 
 		{
-				addChild(spawnPaddle[0]);
+				addChild(new PaddleArt);
 
 		}
 	}

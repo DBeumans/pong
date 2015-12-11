@@ -2,7 +2,15 @@
 <imagedata>
   <image>
     <name>Background1</name>
-    <link>http://www.solidbackgrounds.com/images/1920x1080/1920x1080-white-solid-color-background.jpg</link>
+    <link>../lib/backgroundImages/back1.jpg</link>
+  </image>
+	<image>
+    <name>Background2</name>
+    <link>../lib/backgroundImages/back2.jpg</link>
+  </image>
+	<image>
+    <name>Background2</name>
+    <link>../lib/backgroundImages/back3.jpg</link>
   </image>
 
 </imagedata>

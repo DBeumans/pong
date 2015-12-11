@@ -11,6 +11,7 @@ package screens
 	import utils.Controller;
 	import flash.events.KeyboardEvent;
 	import screens.ShopScreen;
+
 	
 	
 	import flash.system.fscommand;
@@ -25,8 +26,6 @@ package screens
 		private var start:TextField;
 		
 		private var _shopScreen:ShopScreen;	
-	
-		
 		
 		
 		
@@ -81,25 +80,18 @@ package screens
 			start.y = stage.stageHeight / 2 + 20;
 			
 			addChild(start);
-
-
-			
-			_shop.x = 600;
+	
+			_shop.x = 590;
 			_shop.y = 10;
 
 			this.addChild(_shop);
-			
-			
-			
-			
-			
+
 			_quit.x = 750;
 			_quit.y = 10;
 			
 			this.addChild(_quit);
 			
-			
-			
+
 			start.addEventListener(Event.ENTER_FRAME, loop);
 			
 			
@@ -111,12 +103,7 @@ package screens
 			
 			_shop.addEventListener(MouseEvent.CLICK, btn_shop_click);
 			_shop.addEventListener(MouseEvent.MOUSE_OVER, btn_shp_over);
-			_shop.addEventListener(MouseEvent.MOUSE_OUT, btn_shp_out);
-
-			
-			
-			
-			
+			_shop.addEventListener(MouseEvent.MOUSE_OUT, btn_shp_out);	
 		}		
 		private function btn_quit_over(e:MouseEvent):void
 		{
@@ -125,7 +112,8 @@ package screens
 			_quit.buttonMode = true;
 			trace("over");
 			
-	
+			_quit.scaleX = 1.13;
+			_quit.scaleY = 1.13;
 			
 			
 		}
@@ -135,6 +123,8 @@ package screens
 			_quit.alpha = 1;
 			_quit.buttonMode = false;
 			trace("out");
+			_quit.scaleX = 1;
+			_quit.scaleY = 1;
 
 		}
 		private function btn_shp_over(e:MouseEvent):void
@@ -143,16 +133,17 @@ package screens
 			_shop.alpha = 0.8;
 			_shop.buttonMode = true;
 			trace("over");
-	
-			
+			_shop.scaleX = 1.13;
+			_shop.scaleY = 1.13;	
 			
 		}
 		private function btn_shp_out(e:MouseEvent):void
-		{
-			
+		{	
 			_shop.alpha = 1;
 			_shop.buttonMode = false;
 			trace("out");
+			_shop.scaleX = 1;
+			_shop.scaleY = 1;
 
 		}
 		
@@ -184,21 +175,18 @@ package screens
 			{
 				start.removeEventListener(Event.ENTER_FRAME, loop);		
 				stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-				dispatchEvent(new Event(START_GAME));
 				
+				dispatchEvent(new Event(START_GAME));
 			}
-			
-			
 
 		}
 		
-
 		
+			
+
 		private var dir:Boolean = true;
 		private function loop(e:Event):void 
 		{
-			
-			
 			
 			if (dir)
 			{

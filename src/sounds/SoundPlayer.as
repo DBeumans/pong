@@ -30,8 +30,9 @@ package sounds
 			loadSound("../lib/intro.mp3");//4	
 			loadSound("../lib/menuhit.mp3");//5
 			loadSound("../lib/menubackground.mp3");//6
-			loadSound("../lib/gos.mp3");//7
+			loadSound("../lib/goos.mp3");//7
 			loadSound("../lib/menuhover.mp3");//8
+			loadSound("../lib/winMusic.mp3");//9
 						
 			_main.addEventListener(GameScreen.BALL_BOUNCE, onBounce, true);
 			_main.addEventListener(GameScreen.GAME_OVER, onGameOver, true);
@@ -40,13 +41,19 @@ package sounds
 			_main.addEventListener(ShopScreen.BUTTON_CLICK, onClick, true);
 			_main.addEventListener(IntroScreen.MENU_MUSIC, onbackgroundMusic, true);
 			_main.addEventListener(IntroScreen.BUTTON_HOVER, onHover, true);
-			//_main.addEventListener(ShopScreen.BUTTON_HOVER, onHover, true);
+			_main.addEventListener(GameScreen.WIN_MUSIC, onWin, true);
+			
 			
 			_main.addEventListener(Main.START_MUSIC, onMusicStart, true);
 		
 			
 			
 			
+		}
+		private function onWin(e:Event):void
+		{
+			stopAllSounds();
+			playSound(9);
 		}
 		private function onHover(e:Event):void
 		{
