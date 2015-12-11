@@ -263,7 +263,7 @@ package screens
 		
 		private function checkScore():void
 		{
-			if (scoreboard.player1 >= 1)
+			if (scoreboard.player1 >= 10)
 			{
 				
 				destroy();
